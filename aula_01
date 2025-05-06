@@ -60,3 +60,22 @@ print(f' soma: \n {soma}')
 print(f' subtração: \n {subtracao}')
 print(f' multiplicação:\n {multiplicacao}')
 print(f' divisão:\n {divisao}')
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+#2- Escreva um programa que leia uma série com 10 idades e ao final separe as que
+#estão iguais e acima de 18 anos das que estão abaixo de 18 anos.
+
+import pandas as pd
+
+#entrada de dados
+idades = pd.Series([15,18,19,65,78,92,45,12,36,8])
+
+#processamento de dados
+igual_ou_acima = idades[idades >= 18]
+abaixo = idades[idades < 18]
+
+#saida dos dados
+print(f'Idades acima ou igual a 18: \n {igual_ou_acima}')
+print(f'Idades abaixo de 18: \n {abaixo}')
+
