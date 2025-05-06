@@ -52,9 +52,16 @@ serie_2 = pd.Series([8,4,2,4,3,5,7,41,74,1])
 
 #processamento dos dados
 soma = serie_1 + serie_2
+soma = soma.sort_values(ascending=False)
+
 subtracao = serie_1 - serie_2
+subtracao = subtracao.sort_values(ascending=False)
+
 multiplicacao = serie_1 * serie_2
+multiplicacao = multiplicacao.sort_values(ascending=False)
+
 divisao = serie_1 / serie_2
+divisao = divisao.sort_values(ascending=False)
 
 print(f' soma: \n {soma}')
 print(f' subtração: \n {subtracao}')
