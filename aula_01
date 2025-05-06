@@ -38,3 +38,25 @@ abaixo_da_media = nota_1[nota_1<70]
 #saída dos dados
 print(f'Essas notas são iguais/acima da média: {acima_da_media}')
 print(f'Essas notas estão abaixo da média: {abaixo_da_media}')
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+
+#1- Faça um programa que leia duas séries com 10 números inteiros cada e ao final
+#mostre a soma, a subtração, a multiplicação e a divisão entre elas.
+
+import pandas as pd
+
+#entrada de dados
+serie_1 = pd.Series([1,8,78,5,9,10,14,45,87,98])
+serie_2 = pd.Series([8,4,2,4,3,5,7,41,74,1])
+
+#processamento dos dados
+soma = serie_1 + serie_2
+subtracao = serie_1 - serie_2
+multiplicacao = serie_1 * serie_2
+divisao = serie_1 / serie_2
+
+print(f' soma: \n {soma}')
+print(f' subtração: \n {subtracao}')
+print(f' multiplicação:\n {multiplicacao}')
+print(f' divisão:\n {divisao}')
