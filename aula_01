@@ -1,0 +1,40 @@
+-----------------------------------------------------------------------------------------------------------------------------------------------
+# analisando dados de uma LISTA
+
+#entrada de dados
+nota_1 = [10,30,45,80,98,74,15,79,90,100]
+
+#ver notas acima de 70 e abaixo
+#processamento de dados
+
+media = 70
+acima_da_media = []
+abaixo_da_media = []
+
+for i in range(len(nota_1)):
+    if nota_1[i] >= media:
+        acima_da_media.append(nota_1[i])
+    elif nota_1[i] < media:
+        abaixo_da_media.append(nota_1[i])
+
+#saída dos dados
+print(f'Essas notas são iguais/acima da média: {acima_da_media}')
+print(f'Essas notas estão abaixo da média: {abaixo_da_media}')
+
+-----------------------------------------------------------------------------------------------------------------------------------------------
+# analisando dados de uma SÉRIE
+
+import pandas as pd
+
+#entrada de dados
+nota_1 = pd.Series([10,30,45,80,98,74,15,79,90,100])
+
+#ver notas acima de 70 e abaixo
+#processamento de dados
+
+acima_da_media = nota_1[nota_1>=70]
+abaixo_da_media = nota_1[nota_1<70]
+
+#saída dos dados
+print(f'Essas notas são iguais/acima da média: {acima_da_media}')
+print(f'Essas notas estão abaixo da média: {abaixo_da_media}')
