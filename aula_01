@@ -83,8 +83,10 @@ igual_ou_acima = idades[idades >= 18]
 abaixo = idades[idades < 18]
 
 #saida dos dados
-print(f'Idades acima ou igual a 18: \n {igual_ou_acima}')
-print(f'Idades abaixo de 18: \n {abaixo}')
+print(f'Idades acima ou igual a 18: \n {igual_ou_acima.to_string(index=False)}')
+print(f'Idades abaixo de 18: \n {abaixo.to_string(index=False)}')
+
+#.to_string(index=False) => REMOVE O INDICE DAS LISTAS NO PRINT
 
 -----------------------------------------------------------------------------------------------------------------------------------------------
 
