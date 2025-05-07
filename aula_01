@@ -104,14 +104,28 @@ print(f'Idades abaixo de 18: \n {abaixo.to_string(index=False)}')
 import pandas as pd
 
 #entrada de dados
-roubo_automoveis = pd.Series([100,90,80,120,110,90,70])
-furto_automoveis = pd.Series([80,60,70,60,100,50,30])
-recuperacao_automoveis = pd.Series([70,50,90,80,100,70,50])
+roubo_automoveis = pd.Series([100,90,80,120,110,90,70], index = ['segunda','terça', 'quarta','quinta','sexta', 'sabado', 'domingo'])
+furto_automoveis = pd.Series([80,60,70,60,100,50,30], index = ['segunda','terça', 'quarta','quinta','sexta', 'sabado', 'domingo'])
+recuperacao_automoveis = pd.Series([70,50,90,80,100,70,50], index = ['segunda','terça', 'quarta','quinta','sexta', 'sabado', 'domingo'])
 
 #processamento dos dados
-roubo_furto = sum(roubo_automoveis) + sum(furto_automoveis)
-taxa_recuperacao = sum(recuperacao_automoveis)/roubo_furto
+
+#criar função para formatar a taxa:
+def formatar(valor):
+    return "{:.2f}%".format(valor)
+
+# é preciso criar função no caso em que a gente abre a serie por dia porque não funciona usar o :.2f no F'string, dado que são vários numeros e não um só consolidado
+
+#formulas
+roubo_furto_total = sum(roubo_automoveis) + sum(furto_automoveis)
+taxa_recuperacao_total = sum(recuperacao_automoveis)/roubo_furto_total*100
+
+roubo_furto = roubo_automoveis + furto_automoveis
+taxa_recuperacao = (recuperacao_automoveis/roubo_furto*100).apply(formatar)
 
 #saida dos dados
-print(f'A quantidade de roubo e furto de automóveis foi: \n {roubo_furto}')
-print(f'A taxa de recuperação foi: \n {taxa_recuperacao}')
+print(f'A quantidade de roubo e furto de automóveis total foi: \n {roubo_furto_total}')
+print(f'A taxa de recuperação total foi: \n {taxa_recuperacao_total:.2f}%')
+
+print(f'A quantidade de roubo e furto de automóveis diária foi: \n {roubo_furto}')
+print(f'A taxa de recuperação diária foi: \n {taxa_recuperacao}')
