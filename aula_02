@@ -133,7 +133,6 @@ print(f'Mínino das idades')
 print(vendedores_df["Idade"].min())
 print(f'Vendedor com maior venda: \n {vendedor_mais_vendas}')
 print(f'Vendedor com menor venda: \n {vendedor_menos_vendas}')
-print(f'Vendas por sexo: \n feminino: {vendas_feminino} \n masculino: {vendas_feminino}')
-
+print(f'Vendas por sexo: \n feminino: {vendas_feminino} \n masculino: {vendas_masculino}')
 
 
