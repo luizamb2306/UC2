@@ -1,0 +1,36 @@
+#1 – O Ministro da Saúde, entrou em contato com você e te solicitou um auxílio, para obter as seguintes informações
+#sobre os dados da vacinação da covid nos últimos quatro anos:
+#- O total e a média de pessoas vacinadas no período.
+#- O total e a média da população do Brasil.
+#- A taxa de vacinação anual, dos últimos 4 anos, sabendo que para se chegar a esse número, deve-se dividir a quantidade
+#de vacinados pela quantidade da população.
+#Ele te enviou os seguintes dados:
+#● População Vacinada: 30000000, 25000000, 10000000, 5000000
+#● População Total: 213317639, 214477744, 215574303, 216687971
+#E pediu para apresentar na tela o resultado das informações solicitadas.
+
+import pandas as pd
+
+#entrada de dados
+
+populacao = {
+    'vacinada': [30000000, 25000000, 10000000, 5000000],
+    'total': [213317639, 214477744, 215574303, 216687971],
+    'ano': [2021, 2022, 2023, 2024]
+}
+populacao_df = pd.DataFrame(populacao)
+
+#processamento de dados
+
+total_vacinado = populacao_df['vacinada'].sum()
+media_vacinado = populacao_df['vacinada'].mean()
+total_populacao = populacao_df['total']
+media_populacao = populacao_df['total'].mean()
+taxa_vacinacao = populacao_df['vacinada']/populacao_df['total']
+
+#saida dos dados
+print(f'Total de pessoas vacinadas: {total_vacinado}')
+print(f'Média de pessoas vacinadas: {media_vacinado}')
+print(f'Total por ano de pessoas no Brasil: {total_populacao}')
+print(f'Média de pessoas no Brasil nos últimos 4 anos: {media_populacao}')
+print(f'Taxa de vacinação anual dos últimos quatro anos: {taxa_vacinacao}')
