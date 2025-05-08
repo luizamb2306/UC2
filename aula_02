@@ -21,19 +21,18 @@ populacao = {
 populacao_df = pd.DataFrame(populacao)
 
 #processamento de dados
-
-total_vacinado = populacao_df['vacinada']
-media_vacinado = populacao_df['vacinada'].mean()
-total_populacao = populacao_df['total']
+# criar coluna calculada de taxa de vacinação, paara poder visualizar taxa e ano
+populacao_df['taxa_vacinacao'] = populacao_df['vacinada'] / populacao_df['total']
 media_populacao = populacao_df['total'].mean()
-taxa_vacinacao = populacao_df['vacinada']/populacao_df['total']
 
 #saida dos dados
-print(f'Total por ano de pessoas vacinadas: {total_vacinado}')
-print(f'Média de pessoas vacinadas nos ultimos 4 anos: {media_vacinado}')
-print(f'Total por ano de pessoas no Brasil: {total_populacao}')
-print(f'Média de pessoas no Brasil nos últimos 4 anos: {media_populacao}')
-print(f'Taxa de vacinação anual dos últimos quatro anos: {taxa_vacinacao}')
+
+print('Taxa de vacinação por ano:')
+print(populacao_df[['ano', 'taxa_vacinacao']])
+print(f'total de população vacinada: {populacao_df["vacinada"].sum()}')
+print(f'média de população vacinada: {populacao_df["vacinada"].mean()}')
+print(f'População total em 2024: {populacao_df.loc[3, "total"]}') ## pegando a população de 2024, que esta no indice 3 
+print(f'Média da população por ano: {media_populacao}')
 
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
