@@ -34,3 +34,41 @@ print(f'Média de pessoas vacinadas nos ultimos 4 anos: {media_vacinado}')
 print(f'Total por ano de pessoas no Brasil: {total_populacao}')
 print(f'Média de pessoas no Brasil nos últimos 4 anos: {media_populacao}')
 print(f'Taxa de vacinação anual dos últimos quatro anos: {taxa_vacinacao}')
+
+----------------------------------------------------------------------------------------------------------------------------------------------
+
+#2 - O Gerente de uma loja pediu o seu auxílio para que a cada 7 dias, calculasse a média do valor vendido, o maior
+#valor vendido e o menor valor vendido de seus 3 vendedores/as. Pediu para que fosse algo automatizado, pois como ele está em
+#fase de expansão, nos próximos meses mais 4 vendedores serão contratados e sua análise deve estar pronta para isso.
+#Ele te passou a venda dos últimos 7 dias, dos/as vendedores/as atuais:
+#• Maria: 800,700,1000,900,1200,600,600
+#• João: 900,500,1100,1000,900,500,700
+#• Manuel: 700,600,900,1200,900,700,400
+#Como resultado, ele gostaria de visualizar o Nome do/a vendedor/a e a média de venda, o maior valor vendido e o
+#menor valor vendido, dos últimos 7 dias.
+
+import pandas as pd
+
+#entrada de dados:
+
+vendas = {'Maria': [800,700,1000,900,1200,600,600],
+          'Joao': [900,500,1100,1000,900,500,700],
+          'Manuel': [700,600,900,1200,900,700,400]
+}
+
+vendas_df = pd.DataFrame(vendas)
+
+#processamento dos dados
+media = vendas_df.mean()
+max = vendas_df.max()
+min = vendas_df.min()
+
+#saida de dados
+print(f'A média para cada vendedor é: \n {media}')
+print(f'O máximo vendido em um dia para cada vendedor é: \n {max}')
+print(f'O mínimo vendido em um dia para cada vendedor é: \n {min}')
+
+
+
+
+
