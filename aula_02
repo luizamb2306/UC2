@@ -61,11 +61,18 @@ vendas_df = pd.DataFrame(vendas)
 media = vendas_df.mean()
 max = vendas_df.max()
 min = vendas_df.min()
+# quero calcular a média de cada dia. pra isso, criar coluna calculada
+#vendas_df.mean(axis=1) calcula a média por linha (ou seja, para cada dia), somando as vendas de todos os vendedores naquele dia e dividindo pelo número de vendedores. O axis=1 é crucial, pois indica que estamos fazendo a média ao longo das colunas (vendedores), e não ao longo das linhas (dias).
+# axis = 1 => por linha
+# axis = 0 => por coluna
+vendas_df['media_diaria'] = vendas_df.mean(axis=1)
 
 #saida de dados
 print(f'A média para cada vendedor é: \n {media}')
 print(f'O máximo vendido em um dia para cada vendedor é: \n {max}')
 print(f'O mínimo vendido em um dia para cada vendedor é: \n {min}')
+print(f'A média para cada dia é:')
+print(vendas_df['media_diaria'])
 
 -------------------------------------------------------------------------------------------------------------------------------------
 
