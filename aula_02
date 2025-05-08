@@ -67,7 +67,73 @@ print(f'A média para cada vendedor é: \n {media}')
 print(f'O máximo vendido em um dia para cada vendedor é: \n {max}')
 print(f'O mínimo vendido em um dia para cada vendedor é: \n {min}')
 
+-------------------------------------------------------------------------------------------------------------------------------------
 
+#3 - O Presidente de uma importante loja no ramo do varejo, entrou em contato com você e te solicitou um auxílio, para
+#obter algumas informações:
+#- Gerar um relatório com todos os dados da tabela.
+#- O total e a média de vendas.
+#- A média das idades, assim como a maior e menor idade.
+#- O nome do vendedor com maior e menor quantidade de vendas no período.
+#- A quantidade de vendas por sexo.
+#Ele te enviou os seguintes dados:
+#vendedores = [
+#['Ana','F',28,120],
+#['Bruno','M',34,150],
+#['Carlos','M',45,110],
+#['Diana','F',30,95],
+#['Eduardo','M',40,130],
+#['Fernanda','F',29,140],
+#['Gustavo','M',38,105],
+#['Helena','F',31,125],
+#['Igor','M',27,100],
+#['Juliana','F',33,135],]
+#E pediu para apresentar na tela o resultado das informações solicitadas
+
+#RESOLUCAO
+
+import pandas as pd
+
+#os dados vieram em um formato diferente... cada serie é como se fosse uma observação da tabela
+
+#entrada de dados
+vendedores = [
+    ['Ana','F',28,120],
+    ['Bruno','M',34,150],
+    ['Carlos','M',45,110],
+    ['Diana','F',30,95],
+    ['Eduardo','M',40,130],
+    ['Fernanda','F',29,140],
+    ['Gustavo','M',38,105],
+    ['Helena','F',31,125],
+    ['Igor','M',27,100],
+     ['Juliana','F',33,135]
+     ]
+
+#criar o dataframe
+colunas = ['Nome', 'Sexo', 'Idade', 'Vendas']
+vendedores_df = pd.DataFrame(vendedores, columns=colunas)
+#Para identificar o nome do vendedor com maior e menor quantidade de vendas, você pode usar o DataFrame.loc combinado com idxmax() e idxmin(), que localizam os índices das maiores e menores vendas, respectivamente.
+vendedor_mais_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmax(), 'Nome']
+vendedor_menos_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmin(), 'Nome']
+vendas_feminino = vendedores_df[vendedores_df['Sexo'] == 'F']['Vendas'].sum()
+vendas_masculino = vendedores_df[vendedores_df['Sexo'] == 'M']['Vendas'].sum()
+
+#saida de dados
+print(f'Relatório com todos os dados da tabela: {vendedores_df}')
+print(f'Total das vendas')
+print(vendedores_df["Vendas"].sum())
+print(f'Média das vendas')
+print(vendedores_df["Vendas"].mean())
+print(f'Média das idades')
+print(vendedores_df["Idade"].mean())
+print(f'Máximo das idades')
+print(vendedores_df["Idade"].max())
+print(f'Mínino das idades')
+print(vendedores_df["Idade"].min())
+print(f'Vendedor com maior venda: \n {vendedor_mais_vendas}')
+print(f'Vendedor com menor venda: \n {vendedor_menos_vendas}')
+print(f'Vendas por sexo: \n feminino: {vendas_feminino} \n masculino: {vendas_feminino}')
 
 
 
