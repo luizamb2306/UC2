@@ -113,6 +113,7 @@ recuperacao_automoveis = pd.Series([70,50,90,80,100,70,50], index = ['segunda','
 #criar função para formatar a taxa:
 def formatar(valor):
     return "{:.2f}%".format(valor)
+# quando é um valor unico, é possivel configurar no Fstring, quando é uma serie, com varios valores, é preciso fazer isso acima 
 
 #formulas
 roubo_furto_total = roubo_automoveis.sum() + sum(furto_automoveis) ## é possível somar os elementos de uma serie dessas duas formas 
@@ -126,5 +127,4 @@ print(f'A quantidade de roubo e furto de automóveis total foi: \n {roubo_furto_
 print(f'A taxa de recuperação total foi: \n {taxa_recuperacao_total:.2f}%')
 
 print(f'A quantidade de roubo e furto de automóveis diária foi: \n {roubo_furto}')
-print(f'A taxa de recuperação diária foi: \n {taxa_recuperacao}')ubo_furto}')
 print(f'A taxa de recuperação diária foi: \n {taxa_recuperacao}')
