@@ -122,8 +122,8 @@ vendedores = [
 colunas = ['Nome', 'Sexo', 'Idade', 'Vendas']
 vendedores_df = pd.DataFrame(vendedores, columns=colunas)
 #Para identificar o nome do vendedor com maior e menor quantidade de vendas, você pode usar o DataFrame.loc combinado com idxmax() e idxmin(), que localizam os índices das maiores e menores vendas, respectivamente.
-vendedor_mais_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmax(), 'Nome']
-vendedor_menos_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmin(), 'Nome']
+vendedor_mais_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmax(), ['Nome','Vendas']]
+vendedor_menos_vendas = vendedores_df.loc[vendedores_df['Vendas'].idxmin(), ['Nome','Vendas']]
 vendas_feminino = vendedores_df[vendedores_df['Sexo'] == 'F']['Vendas'].sum()
 vendas_masculino = vendedores_df[vendedores_df['Sexo'] == 'M']['Vendas'].sum()
 
