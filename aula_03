@@ -76,10 +76,24 @@ print(f'O total de roubos é: {total_roubos:.0f} e a média é: {media_roubos:.0
 
 print(f'O total da população é: {total_populacao:.0f} e a média é: {media_populacao:.0f} por município')
 
-print(f' O município com maior roubo foi: {maior_roubo_municipio}, com {maior_roubo} casos.')
-print(f' O município com menor roubo foi: {menor_roubo_municipio}, com {menor_roubo} casos.')
+#  usar o .values[0] para aparecer somente o valor  e não o indice no print
+#O trecho .values[0] é utilizado para acessar diretamente o primeiro valor dos dados armazenados em um objeto pandas, geralmente uma série (Series) ou uma coluna de um DataFrame.
+print(f' O município com maior roubo foi: {maior_roubo_municipio.values[0]}, com {maior_roubo} casos.')
+print(f' O município com menor roubo foi: {menor_roubo_municipio.values[0]}, com {menor_roubo} casos.')
 
-print(f' O município com maior população é: {maior_populacao_municipio}, com {maior_populacao} pessoas.')
-print(f' O município com menor população é: {menor_populacao_municipio}, com {menor_populacao} pessoas.')
+print(f' O município com maior população é: {maior_populacao_municipio.values[0]}, com {maior_populacao} pessoas.')
+print(f' O município com menor população é: {menor_populacao_municipio.values[0]}, com {menor_populacao} pessoas.')
 
 print(f'A taxa de roubo por município é: \n {taxa_roubo_municipios}')
+
+
+
+
+
+
+
+
+
+
+
+
