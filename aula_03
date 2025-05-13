@@ -69,7 +69,7 @@ municipios_df['taxa_roubo'] = municipios_df['roubos']/municipios_df['populacao']
 def formatar(valor):
     return "{:.2f}%".format(valor)
 
-taxa_roubo_municipios = municipios_df['taxa_roubo'].apply(formatar)
+municipios_df['taxa_roubo_formatada'] = municipios_df['taxa_roubo'].apply(formatar)
 
 #saida dos dados
 print(f'O total de roubos é: {total_roubos:.0f} e a média é: {media_roubos:.0f} por município')
@@ -84,7 +84,9 @@ print(f' O município com menor roubo foi: {menor_roubo_municipio.values[0]}, co
 print(f' O município com maior população é: {maior_populacao_municipio.values[0]}, com {maior_populacao} pessoas.')
 print(f' O município com menor população é: {menor_populacao_municipio.values[0]}, com {menor_populacao} pessoas.')
 
-print(f'A taxa de roubo por município é: \n {taxa_roubo_municipios}')
+print(f'A taxa de roubo por município é: \n')
+print(municipios_df[['municipio','taxa_roubo_formatada']])
+
 
 
 
