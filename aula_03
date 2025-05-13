@@ -1,0 +1,85 @@
+#4 - O Secretário de Segurança Pública do Rio de Janeiro, entrou em contato com você de forma urgente e te solicitou
+#um auxílio, para obter algumas informações que serão apresentadas ao Governador do Estado:
+#- O total e a média de roubos a pedestres no Estado do Rio de Janeiro no último semestre.
+#- O total e a média da população no Estado do Rio de Janeiro.
+#- O maior e o menor valor encontrado em relação aos roubos de pedestres.
+#- O maior e o menor valor encontrado em relação a população.
+#- O nome do município com maior e menor índice de roubos a pedestres.
+#- O nome do município com maior e menor quantidade de pessoas.
+#- A taxa de roubos a pedestres por município, sabendo que para se chegar a esse número, deve-se dividir a
+#quantidade de roubos pela quantidade da população.
+#Ele te enviou os seguintes dados:
+#ocorrencias = [
+#['Rio de Janeiro',6775561,35000],
+#['Niteroi',515317,2500],
+#['São Gonçalo',1091737,15000],
+#['Duque de Caxias',924624,12000],
+#['Nova Iguaçu',821128,10000],
+#['Belford Roxo',513118,9000],
+#['São João de Meriti',471906,8500],
+#['Petrópolis',306678,1000],
+#['Volta Redonda',273988,2000],
+#['Campos dos Goytacazes',507548,4000],]
+#E pediu para apresentar na tela o resultado das informações solicitada
+
+#importar pacote pandas
+import pandas as pd
+
+#entrada de dados:
+#colocar os dados em um dataframe
+
+municipios = [
+            ['Rio de Janeiro',6775561,35000],
+            ['Niteroi',515317,2500],
+            ['São Gonçalo',1091737,15000],
+            ['Duque de Caxias',924624,12000],
+            ['Nova Iguaçu',821128,10000],
+            ['Belford Roxo',513118,9000],
+            ['São João de Meriti',471906,8500], 
+            ['Petrópolis',306678,1000],
+            ['Volta Redonda',273988,2000],
+            ['Campos dos Goytacazes',507548,4000]
+]
+
+colunas = ['municipio', 'populacao', 'roubos']
+
+municipios_df = pd.DataFrame(municipios, columns = colunas)
+
+#processamento dos dados
+total_roubos = municipios_df['roubos'].sum()
+media_roubos = municipios_df['roubos'].mean()
+
+total_populacao = municipios_df['populacao'].sum()
+media_populacao = municipios_df['populacao'].mean()
+
+maior_roubo = municipios_df['roubos'].max()
+maior_roubo_municipio = municipios_df[municipios_df['roubos'] == maior_roubo]['municipio']
+menor_roubo = municipios_df['roubos'].min()
+menor_roubo_municipio = municipios_df[municipios_df['roubos'] == menor_roubo]['municipio']
+
+maior_populacao = municipios_df['populacao'].max()
+maior_populacao_municipio = municipios_df[municipios_df['populacao'] == maior_populacao]['municipio']
+menor_populacao = municipios_df['populacao'].min()
+menor_populacao_municipio = municipios_df[municipios_df['populacao'] == menor_populacao]['municipio']
+
+#para calcular taxa de roubo, inserir uma coluna calculada no dataframe
+municipios_df['taxa_roubo'] = municipios_df['roubos']/municipios_df['populacao']*100
+
+# Definindo a Função para Formatar
+def formatar(valor):
+    return "{:.2f}%".format(valor)
+
+taxa_roubo_municipios = municipios_df['taxa_roubo'].apply(formatar)
+
+#saida dos dados
+print(f'O total de roubos é: {total_roubos:.0f} e a média é: {media_roubos:.0f} por município')
+
+print(f'O total da população é: {total_populacao:.0f} e a média é: {media_populacao:.0f} por município')
+
+print(f' O município com maior roubo foi: {maior_roubo_municipio}, com {maior_roubo} casos.')
+print(f' O município com menor roubo foi: {menor_roubo_municipio}, com {menor_roubo} casos.')
+
+print(f' O município com maior população é: {maior_populacao_municipio}, com {maior_populacao} pessoas.')
+print(f' O município com menor população é: {menor_populacao_municipio}, com {menor_populacao} pessoas.')
+
+print(f'A taxa de roubo por município é: \n {taxa_roubo_municipios}')
