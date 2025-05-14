@@ -87,9 +87,68 @@ print(f' O município com menor população é: {menor_populacao_municipio.value
 print(f'A taxa de roubo por município é: \n')
 print(municipios_df[['municipio','taxa_roubo_formatada']])
 
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#A Gerente de Recursos Humanos da sua empresa te passou o seguinte arquivo de dados funcionarios.csv
+#com as seguintes informações: Nome, Idade, Sexo, Salário e Tempo de Empresa.
+#A partir daí, ela disse que precisa criar um processo automatizado, onde seja possível responder (somente
+#responder, nada mais) às seguintes perguntas:
+#1. Qual a média salarial?
+#2. Qual a média de idade?
+#3. Qual o maior e menor tempo de casa, bem como a diferença entre eles?
+#4. Qual a média de tempo de casa?
+#5. Qual o funcionário mais novo e mais velho, bem como a diferença de idade entre eles?
+#6. Qual o total de funcionários?
+#7. Qual o nome do funcionário com maior salário?
+#8.Qual o nome do funcionário com maior tempo de casa?
+#Esse processo precisa ser automatizado, pois 1 vez por semana, ela precisará apresentar essas informações
+#na reunião com a diretoria
 
 
+#importar bibliotecas
+import pandas as pd   #responsavel pela estrutura
+import numpy as np    #responsavel pela operação matemática
 
+#importar a base de dados
+endereco_dados = 'bases\\funcionarios.csv'
+
+#criar dataframe dos funcionários lendo o arquivo em CSV
+funcionarios_df = pd.read_csv(endereco_dados, sep=',', encoding='iso-8859-1')
+
+#processamento de dados
+media_salarial_1 = funcionarios_df['Salário'].mean() # media usando formula pandas
+media_salarial_2 = np.mean(funcionarios_df['Salário']) # media usando formula numpy
+
+media_idade = np.mean(funcionarios_df['Idade'])
+
+maior_tempo_casa = np.max(funcionarios_df['Tempo'])
+menor_tempo_casa = np.min(funcionarios_df['Tempo'])
+dif_tempo = maior_tempo_casa - menor_tempo_casa
+media_tempo = np.mean(funcionarios_df['Tempo'])
+
+maior_idade = np.max(funcionarios_df['Idade'])
+menor_idade = np.min(funcionarios_df['Idade'])
+dif_idade = maior_idade - menor_idade
+media_idade = np.mean(funcionarios_df['Idade'])
+funcionario_mais_novo = funcionarios_df[funcionarios_df['Idade'] == menor_idade]['Nome']
+funcionario_mais_velho = funcionarios_df[funcionarios_df['Idade'] == maior_idade]['Nome']
+
+total_funcionarios = np.count_nonzero(funcionarios_df['Nome'])
+
+maior_salario = np.max(funcionarios_df['Salário'])
+funcionario_maior_salario = funcionarios_df[funcionarios_df['Salário'] == maior_salario]['Nome']
+
+funcionario_maior_tempo = funcionarios_df[funcionarios_df['Tempo'] == maior_tempo_casa]['Nome']
+
+#saida de dados
+print(f'Qual a média salarial?: R${media_salarial_2:.1f}')
+print(f'Qual a média de idade?: {media_idade:0f} anos')
+print(f'Qual o maior e menor tempo de casa, bem como a diferença entre eles? \n maior tempo: {maior_tempo_casa} \n menor tempo: {menor_tempo_casa} \n diferença: {dif_tempo}')
+print(f'Qual a média de tempo de casa?: {media_tempo:.0f} anos')
+print(f'Qual o funcionário mais novo e mais velho, bem como a diferença de idade entre eles?: \n mais novo: {funcionario_mais_novo.values[0]} \n mais velho: {funcionario_mais_velho.values[0]}')
+print(f'Qual o total de funcionários?: {total_funcionarios} funcionários')
+print(f'Qual o nome do funcionário com maior salário?: {funcionario_maior_salario.values[0]}')
+print(f'Qual o nome do funcionário com maior tempo de casa?: {funcionario_maior_tempo.values[0]}')
 
 
 
