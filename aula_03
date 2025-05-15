@@ -118,6 +118,8 @@ funcionarios_df = pd.read_csv(endereco_dados, sep=',', encoding='iso-8859-1')
 #processamento de dados
 media_salarial_1 = funcionarios_df['Salário'].mean() # media usando formula pandas
 media_salarial_2 = np.mean(funcionarios_df['Salário']) # media usando formula numpy
+mediana_salario = np.median(funcionarios_df['Salário'])
+dif_media_mediana_salario = abs((mediana_salario/media_salarial_2)-1)*100
 
 media_idade = np.mean(funcionarios_df['Idade'])
 
@@ -125,11 +127,17 @@ maior_tempo_casa = np.max(funcionarios_df['Tempo'])
 menor_tempo_casa = np.min(funcionarios_df['Tempo'])
 dif_tempo = maior_tempo_casa - menor_tempo_casa
 media_tempo = np.mean(funcionarios_df['Tempo'])
+mediana_tempo = np.median(funcionarios_df['Tempo'])
+dif_media_mediana_tempo = abs((mediana_tempo/media_tempo)-1)*100
 
 maior_idade = np.max(funcionarios_df['Idade'])
 menor_idade = np.min(funcionarios_df['Idade'])
 dif_idade = maior_idade - menor_idade
+
 media_idade = np.mean(funcionarios_df['Idade'])
+mediana_idade = np.median(funcionarios_df['Idade'])
+dif_media_mediana_idade = abs((mediana_idade / media_idade)-1)*100
+
 funcionario_mais_novo = funcionarios_df[funcionarios_df['Idade'] == menor_idade]['Nome']
 funcionario_mais_velho = funcionarios_df[funcionarios_df['Idade'] == maior_idade]['Nome']
 
@@ -141,15 +149,14 @@ funcionario_maior_salario = funcionarios_df[funcionarios_df['Salário'] == maior
 funcionario_maior_tempo = funcionarios_df[funcionarios_df['Tempo'] == maior_tempo_casa]['Nome']
 
 #saida de dados
-print(f'Qual a média salarial?: R${media_salarial_2:.1f}')
-print(f'Qual a média de idade?: {media_idade:0f} anos')
+print(f'Qual a média salarial?: R${media_salarial_2:.1f}. Mediana: {dif_media_mediana_salario:.3f}%')
+print(f'Qual a média de idade?: {media_idade:.0f} anos. A mediana é: {mediana_idade:.0f}. A diferença entre elas é: {dif_media_mediana_idade:.4f}% ')
 print(f'Qual o maior e menor tempo de casa, bem como a diferença entre eles? \n maior tempo: {maior_tempo_casa} \n menor tempo: {menor_tempo_casa} \n diferença: {dif_tempo}')
-print(f'Qual a média de tempo de casa?: {media_tempo:.0f} anos')
+print(f'Qual a média de tempo de casa?: {media_tempo:.0f} anos. Mediana: {mediana_tempo:.0f}. Delta: {dif_media_mediana_tempo:.3f}%')
 print(f'Qual o funcionário mais novo e mais velho, bem como a diferença de idade entre eles?: \n mais novo: {funcionario_mais_novo.values[0]} \n mais velho: {funcionario_mais_velho.values[0]}')
 print(f'Qual o total de funcionários?: {total_funcionarios} funcionários')
 print(f'Qual o nome do funcionário com maior salário?: {funcionario_maior_salario.values[0]}')
 print(f'Qual o nome do funcionário com maior tempo de casa?: {funcionario_maior_tempo.values[0]}')
-
 
 
 
