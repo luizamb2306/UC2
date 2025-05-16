@@ -1,0 +1,86 @@
+#Importe a base de dados chamada Titanic.csv e responda às seguintes perguntas:
+#1. Qual era a faixa etária dos passageiros desse navio?
+#2. Qual era a condição econômica desses passageiros?
+#3. Qual o percentual de passageiros que sobreviveram?
+#4. Qual a quantidade de pessoas do sexo masculino e feminino que estavam a bordo?
+#Qual a conclusão acerca dos passageiros do navio?
+
+#importar bibliotecas
+import pandas as pd   #responsavel pela estrutura
+import numpy as np    #responsavel pela operação matemática
+
+#importar a base de dados
+# para isso, guardar em uma variável
+titanic = 'C:\\Users\\36134552025.1\\UC_02\\bases\\titanic.csv'
+
+#transformar em um dataframe
+titanic_df = pd.read_csv(titanic, sep=';', encoding='iso-8859-1')
+
+#especificando colunas que quero do dataframe, pra ficar mais eficiente
+titanic_df = titanic_df[['Name', 'Sex', 'Age', 'Survived', 'Pclass', 'Fare']]
+
+#------------- Qual era a faixa etária dos passageiros desse navio?---------
+# pode-se calcular: media / mediana do total e também agrupando de varias formas (genero, classe e etc)
+# média geral
+media_idade = np.mean(titanic_df['Age'])
+mediana_idade = np.median(titanic_df['Age'])
+dif_idade = abs((media_idade/mediana_idade)-1)*100
+
+#média por genero, usar groupby do pandas
+media_idade_genero = titanic_df.groupby('Sex')['Age'].mean()
+mediana_idade_genero = titanic_df.groupby('Sex')['Age'].median()
+dif_idade_genero = abs((media_idade_genero/mediana_idade_genero)-1)*100
+
+#média por classe economica, usar groupby do pandas
+media_idade_classe = titanic_df.groupby('Pclass')['Age'].mean()
+mediana_idade_classe = titanic_df.groupby('Pclass')['Age'].median()
+dif_idade_classe = abs((media_idade_classe/mediana_idade_classe)-1)*100
+
+#-------------Qual era a condição econômica desses passageiros?--------------
+# calcular a média e a mediana geral das tarifas (fares)
+media_fare = np.mean(titanic_df['Fare'])
+mediana_fare = np.median(titanic_df['Fare'])
+dif_fare = abs((media_fare/mediana_fare)-1)
+
+#media por classe economica
+media_fare_classe = titanic_df.groupby('Pclass')['Fare'].mean()
+mediana_fare_classe = titanic_df.groupby('Pclass')['Fare'].median()
+dif_fare_classe = abs((media_fare_classe/mediana_fare_classe)-1)
+
+#--------------Qual o percentual de passageiros que sobreviveram?-------
+sobreviveram = np.count_nonzero(titanic_df['Survived'] == 1)
+nao_sobreviveram = np.count_nonzero(titanic_df['Survived'] == 0)
+taxa_sobrevivencia = sobreviveram/(sobreviveram + nao_sobreviveram)*100
+
+#calcular por classe
+#pra isso, criar um dataframe dos que sobreviveram
+titanic_df_sobreviveram = titanic_df[titanic_df['Survived'] == 1]
+sobreviveram_classe = titanic_df_sobreviveram.groupby('Pclass')['Name'].count()
+titanic_df_nao_sobreviveram = titanic_df[titanic_df['Survived'] == 0]
+nao_sobreviveram_classe = titanic_df_nao_sobreviveram.groupby('Pclass')['Name'].count()
+taxa_sobrevivencia_classe = sobreviveram_classe/(sobreviveram_classe + nao_sobreviveram_classe)*100
+
+#-------------Qual a quantidade de pessoas do sexo masculino e feminino que estavam a bordo?--------------------
+feminino = np.count_nonzero(titanic_df['Sex'] == 'female')
+masculino = np.count_nonzero(titanic_df['Sex'] == 'male')
+
+
+
+#saída dos dados:
+
+print(f'Em relação a idade:--------------------------------------')
+print(f'A média geral é {media_idade:.0f} anos, enquanto a mediana é {mediana_idade:.0f} anos, sendo a diferença entre a média e mediana de{dif_idade:.0f}%')
+print(f'A média por gênero é \n {media_idade_genero.to_string(index=True, header=False)} anos, \n enquanto a mediana é \n {mediana_idade_genero.to_string(index=True, header=False)} anos, \n sendo a diferença percentual entre a média e mediana de \n {dif_idade_genero.to_string(index=True, header=False)}')
+print(f'A média por classe é \n {media_idade_classe.to_string(index=True, header=False)} anos, \n enquanto a mediana é \n {mediana_idade_classe.to_string(index=True, header=False)} anos, \n sendo a diferença percentual entre a média e mediana de \n {dif_idade_classe.to_string(index=True, header=False)}')
+
+print(f'Em relação a condição economica:--------------------------------------')
+print(f'A média geral é {media_fare:.0f}, enquanto a mediana é {mediana_fare:.0f}, sendo a diferença entre a média e mediana de{dif_fare:.0f}%')
+print(f'A média por classe é \n {media_fare_classe.to_string(index=True, header=False)}, \n enquanto a mediana é \n {mediana_fare_classe.to_string(index=True, header=False)}, \n sendo a diferença percentual entre a média e mediana de \n {dif_fare_classe.to_string(index=True, header=False)}')
+
+print(f'---------------Sobrevivência---------------------')
+print(f'{taxa_sobrevivencia:.1f}% dos passageiros sobreviveram')
+print(f'Analisando por classe, a taxa de sobrevivencia é:{taxa_sobrevivencia_classe:.1f}% ')
+
+
+print(f'-----------------------Divisão por gênero-----------------------------')
+print(f'Tinha {feminino} passageiros do sexo feminino e {masculino} passageiros do sexo masculino')
