@@ -65,7 +65,6 @@ feminino = np.count_nonzero(titanic_df['Sex'] == 'female')
 masculino = np.count_nonzero(titanic_df['Sex'] == 'male')
 
 
-
 #saída dos dados:
 
 print(f'Em relação a idade:--------------------------------------')
@@ -78,8 +77,8 @@ print(f'A média geral é {media_fare:.0f}, enquanto a mediana é {mediana_fare:
 print(f'A média por classe é \n {media_fare_classe.to_string(index=True, header=False)}, \n enquanto a mediana é \n {mediana_fare_classe.to_string(index=True, header=False)}, \n sendo a diferença percentual entre a média e mediana de \n {dif_fare_classe.to_string(index=True, header=False)}')
 
 print(f'---------------Sobrevivência---------------------')
-print(f'{taxa_sobrevivencia:.1f}% dos passageiros sobreviveram')
-print(f'Analisando por classe, a taxa de sobrevivencia é:{taxa_sobrevivencia_classe:.1f}% ')
+print(f'{taxa_sobrevivencia} dos passageiros sobreviveram')
+print(f'Analisando por classe, a taxa de sobrevivencia é:\n{taxa_sobrevivencia_classe} ')
 
 
 print(f'-----------------------Divisão por gênero-----------------------------')
