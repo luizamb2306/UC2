@@ -64,6 +64,28 @@ taxa_sobrevivencia_classe = sobreviveram_classe/(sobreviveram_classe + nao_sobre
 feminino = np.count_nonzero(titanic_df['Sex'] == 'female')
 masculino = np.count_nonzero(titanic_df['Sex'] == 'male')
 
+#calculando os quartes da passagem e da idade
+q1_idade = np.quantile(titanic_df['Age'],0.25, method='weibull')
+q2_idade = np.quantile(titanic_df['Age'],0.50, method='weibull')
+q3_idade = np.quantile(titanic_df['Age'],0.75, method='weibull')
+iqr_idade = q3_idade - q1_idade
+q1_fare = np.quantile(titanic_df['Fare'],0.25, method='weibull')
+q2_fare = np.quantile(titanic_df['Fare'],0.50, method='weibull')
+q3_fare = np.quantile(titanic_df['Fare'],0.75, method='weibull')
+iqr_fare = q3_fare - q1_fare
+
+#identificando os valores discrepantes (outliers)
+limite_superior_idade = q3_idade + (1.5*iqr_idade)
+limite_inferior_idade = q1_idade - (1.5*iqr_idade)
+limite_superior_fare = q3_fare + (1.5*iqr_fare)
+limite_inferior_fare = q1_fare - (1.5*iqr_fare)
+
+##filtrando o dataframe dos valores discrepantes
+df_outliers_idade_inferiores = titanic_df[titanic_df['Age'] < limite_inferior_idade]
+df_outliers_idade_superiores = titanic_df[titanic_df['Age'] > limite_superior_idade]
+df_outliers_fare_inferiores = titanic_df[titanic_df['Fare'] < limite_inferior_fare]
+df_outliers_fare_superiores = titanic_df[titanic_df['Fare'] > limite_superior_fare]
+
 
 #saída dos dados:
 
@@ -71,17 +93,50 @@ print(f'Em relação a idade:--------------------------------------')
 print(f'A média geral é {media_idade:.0f} anos, enquanto a mediana é {mediana_idade:.0f} anos, sendo a diferença entre a média e mediana de{dif_idade:.0f}%')
 print(f'A média por gênero é \n {media_idade_genero.to_string(index=True, header=False)} anos, \n enquanto a mediana é \n {mediana_idade_genero.to_string(index=True, header=False)} anos, \n sendo a diferença percentual entre a média e mediana de \n {dif_idade_genero.to_string(index=True, header=False)}')
 print(f'A média por classe é \n {media_idade_classe.to_string(index=True, header=False)} anos, \n enquanto a mediana é \n {mediana_idade_classe.to_string(index=True, header=False)} anos, \n sendo a diferença percentual entre a média e mediana de \n {dif_idade_classe.to_string(index=True, header=False)}')
+print(f'O valor do 1Q da idade é: \n {q1_idade}')
+print(f'O valor do 2Q da idade é: \n {q2_idade}')
+print(f'O valor do 3Q da idade é: \n {q3_idade}')
+print(f'O IQR é: \n {iqr_idade}')
+print(f'O limite inferior é: \n {limite_inferior_idade}')
+print(f'O limite superior é: \n {limite_superior_idade}')
 
-print(f'Em relação a condição economica:--------------------------------------')
-print(f'A média geral é {media_fare:.0f}, enquanto a mediana é {mediana_fare:.0f}, sendo a diferença entre a média e mediana de{dif_fare:.0f}%')
-print(f'A média por classe é \n {media_fare_classe.to_string(index=True, header=False)}, \n enquanto a mediana é \n {mediana_fare_classe.to_string(index=True, header=False)}, \n sendo a diferença percentual entre a média e mediana de \n {dif_fare_classe.to_string(index=True, header=False)}')
+if len(df_outliers_idade_inferiores) == 0:
+    print('Não existem outliers inferiores')
+else:    
+    print(f' outliers superiores: {df_outliers_idade_inferiores}')
 
-print(f'---------------Sobrevivência---------------------')
+if len(df_outliers_idade_superiores) == 0:
+    print('Não existem outliers superiores')
+else:    
+    print(f' outliers superiores: {df_outliers_idade_superiores}')
+
+
+print(f' \n Em relação a condição economica:--------------------------------------')
+print(f'A média geral da passagem é {media_fare:.0f}, enquanto a mediana é {mediana_fare:.0f}, sendo a diferença entre a média e mediana de{dif_fare:.0f}%')
+print(f'A média da passagem por classe é \n {media_fare_classe.to_string(index=True, header=False)}, \n enquanto a mediana é \n {mediana_fare_classe.to_string(index=True, header=False)}, \n sendo a diferença percentual entre a média e mediana de \n {dif_fare_classe.to_string(index=True, header=False)}')
+print(f'O valor do 1Q da passagem é: \n {q1_idade}')
+print(f'O valor do 2Q da passagem é: \n {q2_idade}')
+print(f'O valor do 3Q da passagem é: \n {q3_idade}')
+print(f'O IQR é: \n {iqr_fare}')
+print(f'O limite inferior é: \n {limite_inferior_fare}')
+print(f'O limite superior é: \n {limite_superior_fare}')
+if len(df_outliers_fare_inferiores) == 0:
+    print('Não existem outliers inferiores')
+else:    
+    print(f' outliers superiores: {df_outliers_fare_inferiores}')
+
+if len(df_outliers_fare_superiores) == 0:
+    print('Não existem outliers superiores')
+else:    
+    print(f' outliers superiores: {df_outliers_fare_superiores}')
+
+
+print(f' \n ---------------Sobrevivência---------------------')
 print(f'{taxa_sobrevivencia} dos passageiros sobreviveram')
 print(f'Analisando por classe, a taxa de sobrevivencia é:\n{taxa_sobrevivencia_classe} ')
 
 
-print(f'-----------------------Divisão por gênero-----------------------------')
+print(f'\n -----------------------Divisão por gênero-----------------------------')
 print(f'Tinha {feminino} passageiros do sexo feminino e {masculino} passageiros do sexo masculino')
 
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
