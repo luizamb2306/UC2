@@ -1,0 +1,72 @@
+#O Ministério da Educação (MEC) por meio de seu Secretário de Educação entrou em contato com você para a realização do levantamento de algumas informações contidas na base do arquivo ENEM_2020_2023.csv, conforme segue abaixo:  
+    #A média dos inscritos no exame dos últimos anos (2014 a 2023).  
+    #A mediana dos inscritos no exame dos últimos anos (2014 a 2023).  
+    #A distância entre a média e a mediana dos inscritos no exame dos últimos anos (2014 a 2023).  
+    #O maior e o menor número dos inscritos no exame dos últimos anos (2014 a 2023), assim como a amplitude dos valores.  
+    #Verifique se existem valores discrepantes (Outliers Inferiores e/ou Superiores).  
+    #Sabendo que o estado do Acre possui o menor número de inscritos e o estado de São Paulo o maior número de inscritos no exame dos últimos anos, apresente o percentual de variação entre esses dois estados. 
+#Após observar os dados obtidos, qual a análise você faz em relação aos inscritos nos últimos exames? Prepare um pequeno texto que fundamente a sua análise (Mapeamento de Processos e Requisitos). 
+
+#ENTRADAS DE DADOS
+# importar bibliotecas
+import pandas as pd 
+import numpy as np
+
+#importar a base de dados
+enem = 'C:\\Users\\36134552025.1\\UC_02\\bases\\enem_2014_2023.csv'
+
+#transformar em um dataframe
+enem_df = pd.read_csv(enem, sep=';', encoding='iso-8859-1')
+
+# transformar as colunas de anos em linhas 
+
+enem_df_ajustado = pd.melt(enem_df,
+                     id_vars=['Estado'],         # mantém a coluna Estado
+                     value_vars=[str(ano) for ano in range(2014, 2024)],  # colunas de ano
+                     var_name='Ano',             # nome da nova coluna de anos
+                     value_name='Valor')         # nome da nova coluna com os dados
+
+#PROCESSAMENTO DE DADOS
+
+#medidas resumo
+media = enem_df_ajustado.groupby('Ano')['Valor'].mean()
+mediana = enem_df_ajustado.groupby('Ano')['Valor'].median()
+dif_media_mediana = ((mediana/media)-1)*100
+maior = enem_df_ajustado.groupby('Ano')['Valor'].max()
+menor = enem_df_ajustado.groupby('Ano')['Valor'].min()
+amplitude = maior - menor
+
+# calculando o quartil por ano:
+# Calcula o Q1 (primeiro quartil) da coluna 'Valor' para cada grupo de ano ('Ano'),
+# utilizando a função apply() em conjunto com uma função lambda.
+# A função lambda é uma função anônima (sem nome) usada para aplicar np.quantile()
+# a cada grupo de dados correspondente a um ano.
+# Dentro da lambda, usamos np.quantile(..., method='weibull') para definir o método
+# de interpolação estatística desejado (weibull é útil especialmente com amostras pequenas).
+# O resultado é um DataFrame com o Q1 de cada ano.
+q1 = enem_df_ajustado.groupby('Ano').apply(
+    lambda grupo: np.quantile(grupo['Valor'], 0.25, method='weibull'))
+
+q2 = enem_df_ajustado.groupby('Ano').apply(
+    lambda grupo: np.quantile(grupo['Valor'], 0.50, method='weibull'))
+
+q3 = enem_df_ajustado.groupby('Ano').apply(
+    lambda grupo: np.quantile(grupo['Valor'], 0.75, method='weibull'))
+
+iqr = q3 - q1
+
+limite_inferior_serie = q1 - (1.5*iqr)
+limite_superior_serie = q3 + (1.5*iqr)
+limite_inferior_df = pd.DataFrame(limite_inferior_serie)
+limite_superior_df = pd.DataFrame(limite_superior_serie)
+
+limite_inferior_df.columns = ['limite inferior'] 
+limite_superior_df.columns = ['limite superior'] 
+
+enem_df_com_limites = pd.merge(enem_df_ajustado, limite_inferior_df, on='Ano')
+enem_df_com_limites = pd.merge(enem_df_com_limites, limite_superior_df, on='Ano')
+
+enem_df_com_limites['Outlier inferior'] = np.where(enem_df_com_limites['Valor'] < enem_df_com_limites['limite inferior'], 1, 0)
+enem_df_com_limites['Outlier superior'] = np.where(enem_df_com_limites['Valor'] > enem_df_com_limites['limite superior'], 1, 0)
+
+## terminar depois 
