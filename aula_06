@@ -1,0 +1,42 @@
+### dados consolidados: quando estão agrupados por uma variavel qualitativa
+
+#resumindo dados de homicidio doloso
+
+# importanto bibliotecas 
+import pandas as pd
+import numpy as np
+
+# importando os dados
+endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
+
+#criar o dataframe
+df_ocorrencias = pd.read_csv(endereco_dados,sep=';', encoding='iso-8859-1')
+
+#como a base df_ocorrencias é mto grande, filtrar a base olhando somente as colunas ano e homicidio_doloso
+df_hom_doloso = df_ocorrencias[['ano','hom_doloso']]
+
+# consolidar a base por ano
+df_hom_doloso_consolidada = df_hom_doloso.groupby('ano').sum('hom_doloso').reset_index()
+
+#calcular: media, mediana, amplitude, quartis
+#fazendo pelo pandas
+media = df_hom_doloso_consolidada['hom_doloso'].mean()
+mediana = df_hom_doloso_consolidada['hom_doloso'].median()
+max = df_hom_doloso_consolidada['hom_doloso'].max()
+min = df_hom_doloso_consolidada['hom_doloso'].min()
+amplitude = max - min
+q1 = np.quantile(df_hom_doloso_consolidada['hom_doloso'],0.25, method='weibull')
+q2 = np.quantile(df_hom_doloso_consolidada['hom_doloso'],0.50, method='weibull')
+q3 = np.quantile(df_hom_doloso_consolidada['hom_doloso'],0.75, method='weibull')
+
+#saida de dados
+print(f'A média é: {media:.0f}')
+print(f'A mediana é: {mediana:.0f}')
+print(f'1 quartil:  {q1:.0f}')
+print(f'2 quartil:  {q2:.0f}')
+print(f'3 quartil:  {q3:.0f}')
+print(f'Amplitude: {amplitude:.0f}')
+
+
+
+
