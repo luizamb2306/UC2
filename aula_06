@@ -113,6 +113,8 @@ print(df_roubos_carga_consolidada)
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+MESMA RESOLUÇÃO ACIMA MAS ABRINDO POR ANO E MUNICIPIO:
+
 #A Delegacia de Roubos e Furtos de Cargas (DRFC) por meio do seu Delegado Titular entrou
 #em contato com você e solicitou que fosse realizado um levantamento acerca dos registros de Roubos
 #de Cargas por Municípios.
