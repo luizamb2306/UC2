@@ -43,6 +43,134 @@ print(f'2 quartil:  {q2:.0f}')
 print(f'3 quartil:  {q3:.0f}')
 print(f'Amplitude: {amplitude:.0f}')
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+#A Delegacia de Roubos e Furtos de Cargas (DRFC) por meio do seu Delegado Titular entrou
+#em contato com você e solicitou que fosse realizado um levantamento acerca dos registros de Roubos
+#de Cargas por Municípios.
+#O objetivo principal é verificar a existência de valores que estejam muito acima ou muito abaixo
+#da média.
+#Prepare um relatório que fundamente a sua análise.
+
+# importanto bibliotecas 
+import pandas as pd
+import numpy as np
+
+# importando os dados
+endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
+
+#criar o dataframe
+df_roubos_carga = pd.read_csv(endereco_dados,sep=';', encoding='iso-8859-1')
+
+#tirando 2025, que tem dados incompletos 
+df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != 2025]
+
+#como a base df_ocorrencias é mto grande, filtrar a base olhando somente as colunas munic e roubo_carga
+df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
+df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
+
+#consolidar por municipio
+df_roubos_carga_consolidada = df_roubos_carga.groupby('munic').sum('roubo_carga').reset_index()
+
+#ordernar por roubo de carga
+df_roubos_carga_consolidada = df_roubos_carga_consolidada.sort_values(by='roubo_carga', ascending=False)
+
+#calcular: media, mediana, amplitude, quartis
+#fazendo pelo pandas
+media = df_roubos_carga_consolidada['roubo_carga'].mean()
+mediana = df_roubos_carga_consolidada['roubo_carga'].median()
+dif_media_mediana = ((mediana/media) - 1)*100
+max = df_roubos_carga_consolidada['roubo_carga'].max()
+min = df_roubos_carga_consolidada['roubo_carga'].min()
+amplitude = max - min
+q1 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.25, method='weibull')
+q2 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.50, method='weibull')
+q3 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.75, method='weibull')
+iqr = q3 - q1
+
+limite_inferior_serie = q1 - (1.5*iqr)
+limite_superior_serie = q3 + (1.5*iqr)
+
+#criando dataframes pra colocar os outliers
+outliers_inferiores_df = df_roubos_carga_consolidada[df_roubos_carga_consolidada['roubo_carga'] < limite_inferior_serie]
+outliers_superiores_df = df_roubos_carga_consolidada[df_roubos_carga_consolidada['roubo_carga'] > limite_superior_serie]
+
+qtd_outliers_inferiores = outliers_inferiores_df['roubo_carga'].count()
+qtd_outliers_superiores = outliers_superiores_df['roubo_carga'].count()
+
+#saida de dados
+print(f'A média é: {media:.0f}')
+print(f'A mediana é: {mediana:.0f}')
+print(f'Diferença entre media e mediana: {dif_media_mediana:.2f}%')
+print(f'1 quartil:  {q1:.0f}')
+print(f'2 quartil:  {q2:.0f}')
+print(f'3 quartil:  {q3:.0f}')
+print(f'Amplitude: {amplitude:.0f}')
+print(f' Qtd outliers inferiores: {qtd_outliers_inferiores}')
+print(f' Qtd outliers superiores: {qtd_outliers_superiores}')
+
+print(df_roubos_carga_consolidada)
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#A Delegacia de Roubos e Furtos de Cargas (DRFC) por meio do seu Delegado Titular entrou
+#em contato com você e solicitou que fosse realizado um levantamento acerca dos registros de Roubos
+#de Cargas por Municípios.
+#O objetivo principal é verificar a existência de valores que estejam muito acima ou muito abaixo
+#da média.
+#Prepare um relatório que fundamente a sua análise.
+
+# importanto bibliotecas 
+import pandas as pd
+import numpy as np
+
+# importando os dados
+endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
+
+#criar o dataframe
+df_roubos_carga = pd.read_csv(endereco_dados,sep=';', encoding='iso-8859-1')
+
+#tirando 2025, que tem dados incompletos 
+df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != 2025]
+
+#como a base df_ocorrencias é mto grande, filtrar a base olhando somente as colunas ano, roubo_carga e munic 
+df_roubos_carga = df_roubos_carga[['munic','roubo_carga','ano']]
+
+#consolidar por municipio
+df_roubos_carga_consolidada = df_roubos_carga.groupby(['munic','ano']).sum('roubo_carga')
+
+#calcular: media, mediana, amplitude, quartis
+#fazendo pelo pandas
+media = df_roubos_carga_consolidada['roubo_carga'].mean()
+mediana = df_roubos_carga_consolidada['roubo_carga'].median()
+dif_media_mediana = ((mediana/media) - 1)*100
+max = df_roubos_carga_consolidada['roubo_carga'].max()
+min = df_roubos_carga_consolidada['roubo_carga'].min()
+amplitude = max - min
+q1 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.25, method='weibull')
+q2 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.50, method='weibull')
+q3 = np.quantile(df_roubos_carga_consolidada['roubo_carga'],0.75, method='weibull')
+iqr = q3 - q1
+
+limite_inferior_serie = q1 - (1.5*iqr)
+limite_superior_serie = q3 + (1.5*iqr)
+
+#criando dataframes pra colocar os outliers
+outliers_inferiores_df = df_roubos_carga_consolidada[df_roubos_carga_consolidada['roubo_carga'] < limite_inferior_serie]
+outliers_superiores_df = df_roubos_carga_consolidada[df_roubos_carga_consolidada['roubo_carga'] > limite_superior_serie]
+
+qtd_outliers_inferiores = outliers_inferiores_df['roubo_carga'].count()
+qtd_outliers_superiores = outliers_superiores_df['roubo_carga'].count()
+
+#saida de dados
+print(f'A média é: {media:.0f}')
+print(f'A mediana é: {mediana:.0f}')
+print(f'Diferença entre media e mediana: {dif_media_mediana:.2f}%')
+print(f'1 quartil:  {q1:.0f}')
+print(f'2 quartil:  {q2:.0f}')
+print(f'3 quartil:  {q3:.0f}')
+print(f'Amplitude: {amplitude:.0f}')
+print(f' Qtd outliers inferiores: {qtd_outliers_inferiores}')
+print(f' Qtd outliers superiores: {qtd_outliers_superiores}')
 
 
