@@ -1,5 +1,3 @@
-### dados consolidados: quando estão agrupados por uma variavel qualitativa
-
 #resumindo dados de homicidio doloso
 
 # importanto bibliotecas 
@@ -17,6 +15,11 @@ df_hom_doloso = df_ocorrencias[['ano','hom_doloso']]
 
 # consolidar a base por ano
 df_hom_doloso_consolidada = df_hom_doloso.groupby('ano').sum('hom_doloso').reset_index()
+
+#tirando 2025 dado que ainda não está completo 
+df_hom_doloso_consolidada = df_hom_doloso_consolidada[df_hom_doloso_consolidada['ano'] != 2025]
+
+print(df_hom_doloso_consolidada)
 
 #calcular: media, mediana, amplitude, quartis
 #fazendo pelo pandas
@@ -38,11 +41,6 @@ print(f'1 quartil:  {q1:.0f}')
 print(f'2 quartil:  {q2:.0f}')
 print(f'3 quartil:  {q3:.0f}')
 print(f'Amplitude: {amplitude:.0f}')
-
-
-
-
-
 
 
 
