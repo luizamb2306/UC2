@@ -22,6 +22,7 @@ df_hom_doloso_consolidada = df_hom_doloso.groupby('ano').sum('hom_doloso').reset
 #fazendo pelo pandas
 media = df_hom_doloso_consolidada['hom_doloso'].mean()
 mediana = df_hom_doloso_consolidada['hom_doloso'].median()
+dif_media_mediana = ((mediana/media) - 1)*100
 max = df_hom_doloso_consolidada['hom_doloso'].max()
 min = df_hom_doloso_consolidada['hom_doloso'].min()
 amplitude = max - min
@@ -32,10 +33,16 @@ q3 = np.quantile(df_hom_doloso_consolidada['hom_doloso'],0.75, method='weibull')
 #saida de dados
 print(f'A média é: {media:.0f}')
 print(f'A mediana é: {mediana:.0f}')
+print(f'Diferença entre media e mediana: {dif_media_mediana:.2f}%')
 print(f'1 quartil:  {q1:.0f}')
 print(f'2 quartil:  {q2:.0f}')
 print(f'3 quartil:  {q3:.0f}')
 print(f'Amplitude: {amplitude:.0f}')
+
+
+
+
+
 
 
 
