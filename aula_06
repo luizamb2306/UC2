@@ -18,6 +18,7 @@ df_hom_doloso_consolidada = df_hom_doloso.groupby('ano').sum('hom_doloso').reset
 
 #tirando 2025 dado que ainda não está completo 
 df_hom_doloso_consolidada = df_hom_doloso_consolidada[df_hom_doloso_consolidada['ano'] != 2025]
+#poderia usar tb: df_hom_doloso_consolidada = df_hom_doloso_consolidada[df_hom_doloso_consolidada['ano'].between(2003,2024)]
 
 print(df_hom_doloso_consolidada)
 
