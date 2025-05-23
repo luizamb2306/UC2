@@ -55,6 +55,7 @@ print(f'Amplitude: {amplitude:.0f}')
 # importanto bibliotecas 
 import pandas as pd
 import numpy as np
+import datetime as dt
 
 # importando os dados
 endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
@@ -63,10 +64,10 @@ endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCi
 df_roubos_carga = pd.read_csv(endereco_dados,sep=';', encoding='iso-8859-1')
 
 #tirando 2025, que tem dados incompletos 
-df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != 2025]
+ano_atual = dt.datetime.now().year
+df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != ano_atual]
 
 #como a base df_ocorrencias é mto grande, filtrar a base olhando somente as colunas munic e roubo_carga
-df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
 df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
 
 #consolidar por municipio
@@ -111,7 +112,6 @@ print(f' Qtd outliers inferiores: {qtd_outliers_inferiores}')
 print(f' Qtd outliers superiores: {qtd_outliers_superiores}')
 
 print(df_roubos_carga_consolidada)
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 #MESMA RESOLUÇÃO ACIMA MAS ABRINDO POR ANO E MUNICIPIO:
@@ -126,6 +126,7 @@ print(df_roubos_carga_consolidada)
 # importanto bibliotecas 
 import pandas as pd
 import numpy as np
+import datetime as dt
 
 # importando os dados
 endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
@@ -134,7 +135,8 @@ endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCi
 df_roubos_carga = pd.read_csv(endereco_dados,sep=';', encoding='iso-8859-1')
 
 #tirando 2025, que tem dados incompletos 
-df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != 2025]
+ano_atual = dt.datetime.now().year
+df_roubos_carga = df_roubos_carga[df_roubos_carga['ano'] != ano_atual]
 
 #como a base df_ocorrencias é mto grande, filtrar a base olhando somente as colunas ano, roubo_carga e munic 
 df_roubos_carga = df_roubos_carga[['munic','roubo_carga','ano']]
@@ -175,5 +177,3 @@ print(f'3 quartil:  {q3:.0f}')
 print(f'Amplitude: {amplitude:.0f}')
 print(f' Qtd outliers inferiores: {qtd_outliers_inferiores}')
 print(f' Qtd outliers superiores: {qtd_outliers_superiores}')
-
-
