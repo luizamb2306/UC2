@@ -70,6 +70,7 @@ df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
 df_roubos_carga = df_roubos_carga[['munic','roubo_carga']]
 
 #consolidar por municipio
+# o reset index é porque, como estamos criando uma nova df derivando de outra, podemos restaurar o indice pra voltar a começar do zero. Isso é importante quando queremos ordenar os valores depois. 
 df_roubos_carga_consolidada = df_roubos_carga.groupby('munic').sum('roubo_carga').reset_index()
 
 #ordernar por roubo de carga
