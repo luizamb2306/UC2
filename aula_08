@@ -9,7 +9,6 @@ endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCi
 #criando o dataframe
 df_ocorrencias = pd.read_csv(endereco_dados,sep=';',encoding='iso-8859-1')
 
-
 #criando o df de roubo de veiculos por delegacia
 df_roubo = df_ocorrencias[['cisp','roubo_veiculo']]
 #agrupar por delegacia
@@ -29,6 +28,21 @@ df_recup = df_recup.groupby(['cisp']).sum(['recuperacao_veiculos']).reset_index(
 df_roubo_furto = df_ocorrencias[['cisp','roubo_veiculo','furto_veiculos']]
 df_roubo_furto = df_roubo_furto.groupby(['cisp']).sum(['roubo_veiculo','furto_veiculos']).reset_index()
 
-corr_roubo_furto = np.corrcoef(df_roubo_furto['roubo_veiculo'],df_roubo_furto['furto_veiculos'])[0][1] #==> entender melhor os parametros que definem a correl de um sobre o outro
+#criando o df de furto e de recuperacao
+df_recup_furto = df_ocorrencias[['cisp','recuperacao_veiculos','furto_veiculos']]
+df_recup_furto = df_recup_furto.groupby(['cisp']).sum(['recuperacao_veiculos','furto_veiculos']).reset_index()
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#criando o df de roubo e de recuperacao
+df_recup_roubo = df_ocorrencias[['cisp','recuperacao_veiculos','roubo_veiculo']]
+df_recup_roubo = df_recup_roubo.groupby(['cisp']).sum(['recuperacao_veiculos','roubo_veiculo']).reset_index()
+
+corr_roubo_furto = np.corrcoef(df_roubo_furto['roubo_veiculo'],df_roubo_furto['furto_veiculos'])[0][1]
+corr_recup_furto = np.corrcoef(df_recup_furto['recuperacao_veiculos'],df_recup_furto['furto_veiculos'])[0][1]
+corr_recup_roubo = np.corrcoef(df_recup_roubo['recuperacao_veiculos'],df_recup_roubo['roubo_veiculo'])[0][1]
+
+# Exibindo correlações entre os tipos de ocorrência
+print('\n--- Correlações entre ocorrências de veículos ---')
+
+print(f'Correlação entre roubo e furto de veículos: {corr_roubo_furto:.2f}')
+print(f'Correlação entre recuperação e furto de veículos: {corr_recup_furto:.2f}')
+print(f'Correlação entre recuperação e roubo de veículos: {corr_recup_roubo:.2f}')
