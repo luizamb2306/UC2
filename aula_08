@@ -1,0 +1,34 @@
+#achando a correlação entre 2 variaveis
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
+
+#criando o dataframe
+df_ocorrencias = pd.read_csv(endereco_dados,sep=';',encoding='iso-8859-1')
+
+
+#criando o df de roubo de veiculos por delegacia
+df_roubo = df_ocorrencias[['cisp','roubo_veiculo']]
+#agrupar por delegacia
+df_roubo = df_roubo.groupby(['cisp']).sum(['roubo_veiculo']).reset_index()
+
+#criando o df de furto de veiculos por delegacia
+df_furto = df_ocorrencias[['cisp','furto_veiculos']]
+#agrupar por delegacia
+df_furto = df_furto.groupby(['cisp']).sum(['furto_veiculos']).reset_index()
+
+#criando o df de recuperação de veiculos por delegacia
+df_recup = df_ocorrencias[['cisp','recuperacao_veiculos']]
+#agrupar por delegacia
+df_recup = df_recup.groupby(['cisp']).sum(['recuperacao_veiculos']).reset_index()
+
+#criando o df de furto e de roubo de veiculo
+df_roubo_furto = df_ocorrencias[['cisp','roubo_veiculo','furto_veiculos']]
+df_roubo_furto = df_roubo_furto.groupby(['cisp']).sum(['roubo_veiculo','furto_veiculos']).reset_index()
+
+corr_roubo_furto = np.corrcoef(df_roubo_furto['roubo_veiculo'],df_roubo_furto['furto_veiculos'])[0][1] #==> entender melhor os parametros que definem a correl de um sobre o outro
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
