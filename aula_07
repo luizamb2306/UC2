@@ -227,39 +227,58 @@ if len(df_recuperacao_superior) == 0:
 else:
     print(df_recuperacao_superior.drop(columns='ano').sort_values(by='recuperacao_veiculos',ascending=False))
 
-# Visualizando os dados sobre a recuperação de veículos
+# Importação necessária para visualização (certifique-se de ter importado matplotlib.pyplot como plt)
+# import matplotlib.pyplot as plt
+
+# Exibe mensagem informativa no console
 print('\n- Visualizando os dados sobre a recuperação de veículos -')
-plt.subplots(2,2,figsize=(16,7))
+
+# Cria uma figura com 4 subplots (2 linhas x 2 colunas), definindo o tamanho da figura
+plt.subplots(2, 2, figsize=(16, 7))
+
+# Define o título geral para todos os gráficos da figura
 plt.suptitle('Análise dos Dados sobre a recuperação de veículos')
 
-# posição 01: Gráfico dos Roubos de Veículos
-plt.subplot(2,2,1)
-plt.title('Boxplot de Recuperação de Veículos')
-plt.boxplot(array_recuperacao,vert=False,showmeans=True)
+# ---------------------------------------------------------
+# GRÁFICO 1: Boxplot de recuperação de veículos
+# ---------------------------------------------------------
+plt.subplot(2, 2, 1)  # Posição 1 (linha 1, coluna 1)
+plt.title('Boxplot de Recuperação de Veículos')  # Título do gráfico
+plt.boxplot(array_recuperacao, vert=False, showmeans=True)  # Boxplot horizontal com média visível
 
-# Posição 02: Histograma dos Roubos de Veículos
-plt.subplot(2,2,2)
-plt.title('Histograma dos Roubos de Veículos')
-plt.hist(array_recuperacao,bins=100,edgecolor='black')    
+# ---------------------------------------------------------
+# GRÁFICO 2: Histograma da recuperação de veículos
+# ---------------------------------------------------------
+plt.subplot(2, 2, 2)  # Posição 2 (linha 1, coluna 2)
+plt.title('Histograma dos Roubos de Veículos')  # Título do gráfico
+plt.hist(array_recuperacao, bins=100, edgecolor='black')  # Histograma com 100 faixas e borda preta
 
-# Posição 03: Gráfico dos Outliers dos Roubos de Veículos
-df_recuperacao_superior = df_recuperacao_superior.sort_values(by='recuperacao_veiculos',ascending=True)
-plt.subplot(2,2,3)
-plt.title('Gráfico de Recuperação de Veículos')
-plt.barh(df_recuperacao_superior['aisp'].astype(str),df_recuperacao_superior['recuperacao_veiculos'])
+# ---------------------------------------------------------
+# GRÁFICO 3: Barras horizontais mostrando valores altos de recuperação (outliers)
+# ---------------------------------------------------------
+# Ordena os dados pela quantidade de veículos recuperados (ascendente)
+df_recuperacao_superior = df_recuperacao_superior.sort_values(by='recuperacao_veiculos', ascending=True)
 
-# Posição 04: Medidas Descritivas dos Roubos de Veículos
-plt.subplot(2,2,4)
-plt.title('Medidas Descritivas de recuperação de Veículos')
-plt.axis('off')
-plt.text(0.1,0.9,f'Média de recuperação de Veículos: {media_recuperacao:.0f}')
-plt.text(0.1,0.8,f'Mediana de recuperação de Veículos: {mediana_recuperacao:.0f}')
-plt.text(0.1,0.6,f'Menor Valor de recuperação de Veículos: {min:.0f}')
-plt.text(0.1,0.5,f'Maior Valor de recuperação de Veículos: {max:.0f}')
-plt.text(0.1,0.4,f'O coeficiente de variação de recuperação de Veículos é {coeficiente_var_rec:.2f}')
-plt.text(0.1,0.3,f'A distância da variância de recuperação de Veículos é, {distancia_var_rec:.2f}')
+plt.subplot(2, 2, 3)  # Posição 3 (linha 2, coluna 1)
+plt.title('Gráfico de Recuperação de Veículos')  # Título do gráfico
+plt.barh(df_recuperacao_superior['aisp'].astype(str), df_recuperacao_superior['recuperacao_veiculos'])
+# Gráfico de barras horizontais com eixos convertidos para string (evita erro caso 'aisp' seja numérico)
 
+# ---------------------------------------------------------
+# GRÁFICO 4: Medidas estatísticas descritivas em formato textual
+# ---------------------------------------------------------
+plt.subplot(2, 2, 4)  # Posição 4 (linha 2, coluna 2)
+plt.title('Medidas Descritivas de recuperação de Veículos')  # Título do gráfico
+plt.axis('off')  # Remove os eixos para deixar espaço apenas para o texto
+
+# Exibe medidas estatísticas básicas
+plt.text(0.1, 0.9, f'Média de recuperação de Veículos: {media_recuperacao:.0f}')
+plt.text(0.1, 0.8, f'Mediana de recuperação de Veículos: {mediana_recuperacao:.0f}')
+plt.text(0.1, 0.6, f'Menor Valor de recuperação de Veículos: {min:.0f}')
+plt.text(0.1, 0.5, f'Maior Valor de recuperação de Veículos: {max:.0f}')
+plt.text(0.1, 0.4, f'O coeficiente de variação de recuperação de Veículos é {coeficiente_var_rec:.2f}')
+plt.text(0.1, 0.3, f'A distância da variância de recuperação de Veículos é, {distancia_var_rec:.2f}')
+# OBS: "distância da variância" deve ser melhor definida dependendo do contexto estatístico
+
+# Exibe todos os gráficos em uma janela
 plt.show()
-
-
-
