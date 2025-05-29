@@ -1,3 +1,8 @@
+baixar matplotlib... colocar no cmd do VS Code:
+pip install matplotlib
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 A Delegacia de Roubos e Furtos de Automóveis (DRFA) por meio do seu Delegado Titular
 entrou em contato com você e solicitou que fosse realizado um levantamento acerca dos registros de
 Roubos de Automóveis(roubo_veiculo) por Delegacias(cisp).
