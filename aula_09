@@ -1,0 +1,56 @@
+#O Governador do Estado do Rio de Janeiro, necessita apresentar para a mídia números relativos aos
+#crimes de Homicídio Doloso(hom_doloso) e Cuposo(hom_culposo) por Delegacias de Polícia(cisp), por isso
+#entrou em contato com você e solicitou que fosse realizado uma série de análises.
+#Tais como:
+#- Um Ranking separado para as DPs com valores discrepantes de Homicídios Dolosos e Culposos.
+#- A verificação da Hipótese de uma correlação positiva ou negativa entre os tipos de Homicídios.
+#- A obtenção dos indicadores de coeficiente angular, intercepto e R².
+#- Elaborar o gráfico de dispersão entre os tipos de Homicídios.
+#- Visualização da Reta de Regressão, através do Gráfico de Regressão.
+
+#importar bibliotecas
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
+
+#criando o dataframe
+df_ocorrencias = pd.read_csv(endereco_dados,sep=';',encoding='iso-8859-1')
+
+#selecionando colunas de interesse
+df_ocorrencias = df_ocorrencias[['hom_doloso','hom_culposo','cisp']]
+
+#agrupar por delegacia
+df_ocorrencias_consolidado = df_ocorrencias.groupby(['cisp']).sum(['hom_doloso','hom_culposo']).reset_index()
+
+# 1) Um Ranking separado para as DPs com valores discrepantes de Homicídios Dolosos e Culposos.
+    # pra isso, calcular o limite inferior e superior das 2 variáveis quantitativas
+    #depois colocar os valores discrepantes em um dataframe
+    #lembrar de usar o reset_index
+    #rankear de acordo com o index
+
+q1_h_doloso = np.quantile(df_ocorrencias_consolidado['hom_doloso'],0.25, method='weibull')
+q2_h_doloso = np.quantile(df_ocorrencias_consolidado['hom_doloso'],0.50, method='weibull')
+q3_h_doloso = np.quantile(df_ocorrencias_consolidado['hom_doloso'],0.75, method='weibull')
+iqr_h_doloso = q3_h_doloso - q1_h_doloso
+lim_inf_h_doloso = q1_h_doloso - 1.5*iqr_h_doloso
+lim_sup_h_doloso = q3_h_doloso + 1.5*iqr_h_doloso
+outliers_sup_h_doloso = df_ocorrencias_consolidado[df_ocorrencias_consolidado['hom_doloso'] > lim_sup_h_doloso]['hom_doloso'].reset_index()
+outliers_inf_h_doloso = df_ocorrencias_consolidado[df_ocorrencias_consolidado['hom_doloso'] < lim_inf_h_doloso]['hom_doloso'].reset_index()
+outliers_h_doloso = pd.concat([outliers_inf_h_doloso, outliers_sup_h_doloso]).sort_values(by='hom_doloso', ascending=False).reset_index(drop=True)
+
+
+q1_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.25, method='weibull')
+q2_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.50, method='weibull')
+q3_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.75, method='weibull')
+iqr_h_culposo = q3_h_culposo - q1_h_culposo
+lim_inf_h_culposo = q1_h_culposo - 1.5 * iqr_h_culposo
+lim_sup_h_culposo = q3_h_culposo + 1.5 * iqr_h_culposo
+outliers_sup_h_culposo = df_ocorrencias_consolidado[df_ocorrencias_consolidado['hom_culposo'] > lim_sup_h_culposo]['hom_culposo'].reset_index()
+outliers_inf_h_culposo = df_ocorrencias_consolidado[df_ocorrencias_consolidado['hom_culposo'] < lim_inf_h_culposo]['hom_culposo'].reset_index()
+outliers_h_culposo = pd.concat([outliers_inf_h_culposo, outliers_sup_h_culposo]).sort_values(by='hom_culposo', ascending=False).reset_index(drop=True)
+
+print(f'Ranking das delegacias com valores discrepantes de Homícidio Doloso: \n {outliers_h_doloso} ')
+print(f'Ranking das delegacias com valores discrepantes de Homícidio Culposo: \n {outliers_h_culposo} ')
+
