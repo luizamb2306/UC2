@@ -54,3 +54,12 @@ outliers_h_culposo = pd.concat([outliers_inf_h_culposo, outliers_sup_h_culposo])
 print(f'Ranking das delegacias com valores discrepantes de Homícidio Doloso: \n {outliers_h_doloso} ')
 print(f'Ranking das delegacias com valores discrepantes de Homícidio Culposo: \n {outliers_h_culposo} ')
 
+#2) A verificação da Hipótese de uma correlação positiva ou negativa entre os tipos de Homicídios.
+
+corr_doloso_culposo = np.corrcoef(df_ocorrencias_consolidado['hom_doloso'],df_ocorrencias_consolidado['hom_culposo'])[0][1]
+if corr_doloso_culposo > 0:
+    relacao = "positiva"
+else:
+    relacao = "negativa"
+
+print(f'A correlação é de {corr_doloso_culposo:.2f}, portanto, é {relacao}')
