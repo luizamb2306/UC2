@@ -12,6 +12,8 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
 
 endereco_dados = 'https://www.ispdados.rj.gov.br/Arquivos/BaseDPEvolucaoMensalCisp.csv'
 
@@ -40,7 +42,6 @@ outliers_sup_h_doloso = df_ocorrencias_consolidado[df_ocorrencias_consolidado['h
 outliers_inf_h_doloso = df_ocorrencias_consolidado[df_ocorrencias_consolidado['hom_doloso'] < lim_inf_h_doloso]['hom_doloso'].reset_index()
 outliers_h_doloso = pd.concat([outliers_inf_h_doloso, outliers_sup_h_doloso]).sort_values(by='hom_doloso', ascending=False).reset_index(drop=True)
 
-
 q1_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.25, method='weibull')
 q2_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.50, method='weibull')
 q3_h_culposo = np.quantile(df_ocorrencias_consolidado['hom_culposo'], 0.75, method='weibull')
@@ -63,3 +64,63 @@ else:
     relacao = "negativa"
 
 print(f'A correlação é de {corr_doloso_culposo:.2f}, portanto, é {relacao}')
+
+#3) A obtenção dos indicadores de coeficiente angular, intercepto e R²
+
+    # Regressão Linear Simples
+    # Coeficiente angular: 
+    # Também chamado de inclinação da reta ou coeficiente de regressão, esse valor indica o quanto a variável dependente (por exemplo, vendas, temperatura, lucro etc.) aumenta ou diminui a cada unidade de aumento da variável independente (por exemplo, tempo, investimento, idade etc.).
+    # Intercepto:
+    # É o ponto onde a reta de regressão cruza o eixo Y. Representa o valor estimado da variável dependente quando a variável independente é zero.
+    # R²:
+    # Representa a proporção de variabilidade da variável dependente que pode ser explicada pela variável independente.
+    # É o coeficiente de determinação, que mede o quão bem o modelo explica a variação dos dados.
+    # Varia de 0 a 1:
+    # 0: o modelo não explica nada.
+    # 1: o modelo explica perfeitamente.
+
+# colocar hom_doloso e hom_culposo nas variáveis X e Y
+    # quando tem uma variação no hom_doloso, como o hom_culposo é afetado?
+x_h_doloso = df_ocorrencias_consolidado[['hom_doloso']]
+y_h_culposo = df_ocorrencias_consolidado[['hom_culposo']]
+
+modelo_simples = LinearRegression()
+modelo_simples.fit(x_h_doloso, y_h_culposo)
+
+print("\nRegressão Linear Simples")
+print(f"Coeficiente angular: {modelo_simples.coef_[0][0]:.2f}")
+print(f"Intercepto: {modelo_simples.intercept_[0]:.2f}")
+print(f"R²: {modelo_simples.score(x_h_doloso, y_h_culposo):.3f}")
+
+# 4)Elaborar o gráfico de dispersão entre os tipos de Homicídios.
+
+# Cria uma figura com 1 linha e 2 colunas de subplots, e define o tamanho da figura
+plt.subplots(1, 2, figsize=(16, 10))
+# Define o título geral para toda a figura (todos os subplots)
+plt.suptitle('Análise dos Dados - Homicídio Doloso e Culposo', fontsize=16)
+# Seleciona o subplot na posição 1 da grade 1x2 (ou seja, o primeiro subplot à esquerda)
+plt.subplot(1, 2, 1)
+# Define o título para o subplot selecionado
+plt.title('Correlação Homicídio Doloso e Culposo')
+# Cria o gráfico de dispersão (scatter plot) usando os dados das colunas 'hom_doloso' e 'hom_culposo'
+plt.scatter(df_ocorrencias_consolidado['hom_doloso'], df_ocorrencias_consolidado['hom_culposo'])
+# Define o rótulo do eixo X
+plt.xlabel('Homicídio Doloso')
+# Define o rótulo do eixo Y
+plt.ylabel('Homicídio Culposo')
+
+
+# 5) Visualização da Reta de Regressão, através do Gráfico de Regressão.
+# Seleciona o subplot na posição 2 da grade 1x2 (ou seja, o segundo gráfico, à direita)
+plt.subplot(1, 2, 2)
+# Define o título para esse subplot específico
+plt.title('Regressão Linear: Homicídio Doloso e Culposo')
+# Plota um gráfico de dispersão com a linha de regressão linear ajustada
+# usando seaborn. 
+# - x: coluna 'hom_doloso' do DataFrame
+# - y: coluna 'hom_culposo' do DataFrame
+# - fit_reg=True garante que a linha de regressão seja desenhada
+sns.regplot(x="hom_doloso", y="hom_culposo", data=df_ocorrencias_consolidado, fit_reg=True)
+
+
+plt.show()
