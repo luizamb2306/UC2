@@ -89,3 +89,101 @@ plt.text(
 )
 plt.savefig("relatório_temp_producao_sorvetes.png")
 plt.show()
+
+------------------------------------------------------------------------------------------------------------------------------------------------------
+
+#Objetivo:
+#Uma grande distribuidora de cervejas localizada no Estado do Rio de Janeiro, deseja analisar
+#como a temperatura média diária influencia na venda de cervejas, para isso disponibilizou dados
+#referentes ao primeiro semestre de 2023.
+#Hipóteses a serem testadas:
+    #Hipótese 1 (H1): Existe uma correlação positiva entre a temperatura média e a venda de
+    #cervejas.
+    #Hipótese 2 (H2): A temperatura média é um bom preditor da produção de cerveja(modelo de
+    #regressão linear simples).
+#Análises a Realizar:
+    #Gráfico de dispersão entre temperatura média e produção.
+    #Cálculo da correlação.
+    #Modelo de regressão linear simples:
+        #1. Variável independente: Temperatura média
+        #2. Variável dependente: Venda de cerveja
+    #Visualização da reta de regressão sobre o gráfico de dispersão.
+    #Interpretação dos resultados (coeficiente angular, intercepto, R²).
+
+#importar as bibliotecas
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+
+#entrada de dados
+#importar os dados:
+#colocar os dados em uma variável
+temp_cerv = 'C:\\Users\\36134552025.1\\UC_02\\consumo_cerveja.csv'
+
+#ler os dados e transformar em um dataframe
+temp_cerv_df = pd.read_csv(temp_cerv, sep=',', encoding='iso-8859-1')
+
+#calcular a correlação:
+corr_temp_cerv = np.corrcoef(temp_cerv_df['Consumo de Cerveja'],temp_cerv_df['Temperatura'])[0][1]
+
+#gráfico de dispersão entre a temperatura média e produção:
+# Cria uma figura com 2 linhas e 2 colunas de subplots, e define o tamanho da figura
+plt.subplots(2, 2, figsize=(16, 10))
+# Define o título geral para toda a figura (todos os subplots)
+plt.suptitle('Análise de dados:', fontsize=16)
+# Seleciona o subplot na posição 1 da grade 1x2 (ou seja, o primeiro subplot à esquerda)
+plt.subplot(1, 2, 1)
+# Define o título para o subplot selecionado
+plt.title('Correlação entre venda de cerveja e a temp. média:')
+# Cria o gráfico de dispersão (scatter plot):
+plt.scatter(temp_cerv_df['Temperatura'], temp_cerv_df['Consumo de Cerveja'])
+# Define o rótulo do eixo X
+plt.xlabel('Temperatura')
+# Define o rótulo do eixo Y
+plt.ylabel('Consumo de Cerveja')
+plt.text(
+    x=temp_cerv_df['Temperatura'].min(),   # posição X do texto
+    y=temp_cerv_df['Consumo de Cerveja'].max(),  # posição Y do texto
+    s=f'Correlação: {corr_temp_cerv:.2f}',              # o texto em si
+    fontsize=12,
+    bbox=dict(facecolor='white', alpha=0.7)         # caixa de fundo para melhor visualização
+)
+
+#regressão linear simples:
+# colocar hom_doloso e hom_culposo nas variáveis X e Y
+x_temp = temp_cerv_df[['Temperatura']]
+y_prod = temp_cerv_df[['Consumo de Cerveja']]
+
+modelo_simples = LinearRegression()
+modelo_simples.fit(x_temp, y_prod)
+
+intercepto = modelo_simples.intercept_[0]
+coef_angular = modelo_simples.coef_[0][0]
+r2 = modelo_simples.score(x_temp, y_prod)
+
+#Visualização da Reta de Regressão, através do Gráfico de Regressão.
+plt.subplot(1, 2, 2)
+# Define o título para esse subplot específico
+plt.title('Regressão Linear: Temperatura e Venda de Cerveja')
+# Plota um gráfico de dispersão com a linha de regressão linear ajustada
+# usando seaborn. 
+# - fit_reg=True garante que a linha de regressão seja desenhada
+sns.regplot(x="Temperatura", y="Consumo de Cerveja", data=temp_cerv_df, fit_reg=True)
+
+plt.text(
+    0.05, 0.95,
+    f'Coef. angular (β1): {coef_angular:.2f}\n'
+    f'Intercepto (β0): {intercepto:.2f}\n'
+    f'R²: {r2:.3f}',
+    transform=plt.gca().transAxes,  # Coordenadas relativas ao eixo (0 a 1)
+    fontsize=11,
+    verticalalignment='top',
+    bbox=dict(facecolor='white', edgecolor='black', alpha=0.6)
+)
+plt.savefig("relatório_temp_venda_cerveja.png")
+plt.show()
+
+
