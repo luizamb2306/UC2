@@ -1,0 +1,91 @@
+# DESAFIO 1:
+
+#Objetivo: Analisar como a temperatura média diária influencia a produção de sorvete em uma sorveteria localizada no Rio de Janeiro, durante o mês de janeiro de 2024.  
+#Hipóteses a serem testadas:  
+    #Hipótese 1 (H1): Existe uma correlação positiva entre a temperatura média e a produção de sorvete.  
+    #Hipótese 2 (H2): A temperatura média é um bom preditor da produção de sorvete (modelo de regressão linear simples). 
+#Análises a Realizar:  
+    #Gráfico de dispersão entre temperatura média e produção.  
+    #Cálculo da correlação.  
+    #Modelo de regressão linear simples:  
+        #1. Variável independente: Temperatura média  
+        #2. Variável dependente: Produção de sorvete  
+    #Visualização da reta de regressão sobre o gráfico de dispersão.  
+    #Interpretação dos resultados (coeficiente angular, intercepto, R²). 
+
+#importar as bibliotecas
+
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.linear_model import LinearRegression
+
+#entrada de dados
+#importar os dados:
+#colocar os dados em uma variável
+temp_sorvete = 'C:\\Users\\36134552025.1\\UC_02\\base_dados_sorvete_clima.csv'
+
+#ler os dados e transformar em um dataframe
+temp_sorvete_df = pd.read_csv(temp_sorvete, sep=';', encoding='iso-8859-1')
+
+#calcular a correlação:
+corr_temp_sorvete = np.corrcoef(temp_sorvete_df['Producao_Sorvete'],temp_sorvete_df['Temperatura_Media'])[0][1]
+
+#gráfico de dispersão entre a temperatura média e produção:
+# Cria uma figura com 2 linhas e 2 colunas de subplots, e define o tamanho da figura
+plt.subplots(2, 2, figsize=(16, 10))
+# Define o título geral para toda a figura (todos os subplots)
+plt.suptitle('Análise de dados:', fontsize=16)
+# Seleciona o subplot na posição 1 da grade 1x2 (ou seja, o primeiro subplot à esquerda)
+plt.subplot(1, 2, 1)
+# Define o título para o subplot selecionado
+plt.title('Correlação entre prod. de sorvete e a temp. média:')
+# Cria o gráfico de dispersão (scatter plot):
+plt.scatter(temp_sorvete_df['Producao_Sorvete'], temp_sorvete_df['Temperatura_Media'])
+# Define o rótulo do eixo X
+plt.xlabel('Produção de Sorvete')
+# Define o rótulo do eixo Y
+plt.ylabel('Temperatura média')
+plt.text(
+    x=temp_sorvete_df['Producao_Sorvete'].min(),   # posição X do texto
+    y=temp_sorvete_df['Temperatura_Media'].max(),  # posição Y do texto
+    s=f'Correlação: {corr_temp_sorvete:.2f}',              # o texto em si
+    fontsize=12,
+    bbox=dict(facecolor='white', alpha=0.7)         # caixa de fundo para melhor visualização
+)
+
+#regressão linear simples:
+# colocar hom_doloso e hom_culposo nas variáveis X e Y
+    # quando tem uma variação no hom_doloso, como o hom_culposo é afetado?
+x_temp = temp_sorvete_df[['Temperatura_Media']]
+y_prod = temp_sorvete_df[['Producao_Sorvete']]
+
+modelo_simples = LinearRegression()
+modelo_simples.fit(x_temp, y_prod)
+
+intercepto = modelo_simples.intercept_[0]
+coef_angular = modelo_simples.coef_[0][0]
+r2 = modelo_simples.score(x_temp, y_prod)
+
+#Visualização da Reta de Regressão, através do Gráfico de Regressão.
+plt.subplot(1, 2, 2)
+# Define o título para esse subplot específico
+plt.title('Regressão Linear: Temperatura e Produção de sorvete')
+# Plota um gráfico de dispersão com a linha de regressão linear ajustada
+# usando seaborn. 
+# - fit_reg=True garante que a linha de regressão seja desenhada
+sns.regplot(x="Temperatura_Media", y="Producao_Sorvete", data=temp_sorvete_df, fit_reg=True)
+
+plt.text(
+    0.05, 0.95,
+    f'Coef. angular (β1): {coef_angular:.2f}\n'
+    f'Intercepto (β0): {intercepto:.2f}\n'
+    f'R²: {r2:.3f}',
+    transform=plt.gca().transAxes,  # Coordenadas relativas ao eixo (0 a 1)
+    fontsize=11,
+    verticalalignment='top',
+    bbox=dict(facecolor='white', edgecolor='black', alpha=0.6)
+)
+plt.savefig("relatório_temp_producao_sorvetes.png")
+plt.show()
